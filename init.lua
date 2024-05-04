@@ -552,6 +552,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {},
         --
+        svelte = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -625,11 +626,51 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'nvim-java/nvim-java',
+    config = function()
+      require('java').setup()
+      require('lspconfig').jdtls.setup {
+        settings = {
+          java = {
+            configuration = {
+              runtimes = {
+                {
+                  name = 'JavaSE-17',
+                  path = '/Users/mathias/.sdkman/candidates/java/current/bin',
+                  default = true,
+                },
+              },
+            },
+          },
+        },
+      }
+    end,
+    dependencies = {
+      'nvim-java/lua-async-await',
+      'nvim-java/nvim-java-core',
+      'nvim-java/nvim-java-test',
+      'nvim-java/nvim-java-dap',
+      'MunifTanjim/nui.nvim',
+      'neovim/nvim-lspconfig',
+      'mfussenegger/nvim-dap',
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          registries = {
+            'github:nvim-java/mason-registry',
+            'github:mason-org/mason-registry',
+          },
+        },
+      },
+    },
+  },
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
+      'hrsh7th/cmp-nvim-lsp-signature-help',
       -- Snippet Engine & its associated nvim-cmp source
       {
         'L3MON4D3/LuaSnip',
@@ -724,6 +765,7 @@ require('lazy').setup({
         },
         sources = {
           { name = 'nvim_lsp' },
+          { name = 'nvim_lsp_signature_help' },
           { name = 'luasnip' },
           { name = 'path' },
         },
